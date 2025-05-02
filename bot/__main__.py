@@ -360,3 +360,15 @@ async def main():
 
 bot.loop.run_until_complete(main()) # type: ignore
 bot.loop.run_forever() # type: ignore
+# Dummy HTTP server to pass Koyeb's TCP/HTTP health check
+import threading
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+
+def run_dummy_server():
+    server_address = ('0.0.0.0', 8000)  # Listen on port 8000
+    httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
+    print("Dummy HTTP server running on port 8000")
+    httpd.serve_forever()
+
+# Start dummy server in background
+threading.Thread(target=run_dummy_server, daemon=True).start()
